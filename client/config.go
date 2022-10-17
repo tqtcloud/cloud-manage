@@ -1,7 +1,7 @@
 package client
 
 import (
-	kc "github.com/infraboard/keyauth/client"
+	kc "github.com/infraboard//client"
 )
 
 // NewDefaultConfig todo

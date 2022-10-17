@@ -32,7 +32,8 @@ func (s *service) Config() error {
 	s.db = db
 
 	s.log = zap.L().Named(s.Name())
-	s.book = app.GetGrpcApp(book.AppName).(book.ServiceServer)
+	// 加载其他模块服务过来
+	//s.book = app.GetGrpcApp(book.AppName).(book.ServiceServer)
 	return nil
 }
 

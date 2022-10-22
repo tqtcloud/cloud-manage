@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package infraboard.cmdb.cost;
+option go_package="github.com/tqtcloud/cloud-manage/apps/cost";
+
+// 成本单元类型
+enum Type {
+    // 基于域统计的总账单
+    DOMAIN = 0;
+    // 基于空间的总账单
+    NAMESPACE = 1;
+    // 基于云商的总账单
+    VENDOR = 2;
+    // 基于云商账号的总账单
+    ACCOUNT = 3;
+    // 基于地域的总账单
+    REGION = 4;
+    // 基于资源类型的总账单
+    RESOURCE_TYPE = 5;
+    // 基于环境的总账单
+    ENV = 6;
+}
+
+// 用于成本聚合统计的单元
+message Unit {
+    // 财务单元类型
+    // @gotags: json:"type"
+    Type type = 1;
+    // 财务单元所属域, 到统计域时，该值为空
+    // @gotags: json:"domain"
+    Type domain = 2;
+    // 财务单元的名称
+    // @gotags: json:"name"
+    string name = 3;
+    // 财务单元的描述信息
+    // @gotags: json:"description"
+    string description = 4;
+    // 年份
+    // @gotags: json:"year"
+    int32 year = 5;
+    // 月份
+    // @gotags: json:"month"
+    int32 month = 6;
+    // 月账单
+    // @gotags: json:"real_cost"
+    double real_cost = 7;
+    // 同步增长金额
+    // @gotags: json:"delta_cost"
+    double delta_cost = 8;
+    // 同步增长比例
+    // @gotags: json:"delta_percent"
+    double delta_percent = 9;
+    // 关联的具体详情Task
+    // @gotags: json:"task_id"
+    double task_id = 15;
+}

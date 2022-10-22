@@ -14,11 +14,11 @@ port = "18050"
 
 
 [mysql]
-host = ""
-port = ""
-database = "cmdb"
+host = "192.168.0.241"
+port = "3307"
+database = "test"
 username = "root"
-password = "123456"
+password = "4K1jU43D"
 
 
 

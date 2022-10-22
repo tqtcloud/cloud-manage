@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package infraboard.cmdb.order;
+option go_package="github.com/tqtcloud/cloud-manage/apps/order";
+
+import "apps/resource/pb/resource.proto";
+
+message OrderSet {
+    // 总数量
+    // @gotags: json:"total"
+    int64 total = 1;
+    // 列表项
+    // @gotags: json:"items"
+    repeated Order items = 2;
+}
+
+enum ORDER_TYPE {
+    // 资源新增订单
+    NEW = 0;
+    // 续费。
+    RENEW = 1;
+    // 升级。
+    UPGRADE = 2;
+    // 降配
+    DOWNGRADE = 3;
+    // 退款
+    REFUND = 4;
+    // 付费方式转换
+    CONVERT = 5;
+    // 配置调整
+    MODIFY = 6;
+}
+
+enum ORDER_STATUS {
+    // 未支付 
+    UNPAID = 0;
+    // 订单过期 
+    EXPIRED = 1;
+    // 支付中
+    PAYING = 2;
+    // 已取消
+    CANCELLED = 3;
+    // 已支付
+    PAID = 4;
+}
+
+message Order {
+    // 本次账单同步关联的任务Id
+    // @gotags: json:"task_id"
+    string task_id = 1;
+    // 厂商
+    // @gotags: json:"vendor"
+    resource.VENDOR vendor = 2;
+    // 大订单号
+    // @gotags: json:"big_order_id"
+    string big_order_id = 3;
+    // 订单Id
+    // @gotags: json:"id"
+    string id = 4;
+    // 订单类型
+    // @gotags: json:"order_type"
+    string order_type = 5;
+    // 订单状态
+    // @gotags: json:"status"
+    string status = 6;
+    // 支付者
+    // @gotags: json:"payer"
+    string payer = 7;
+    // 创建时间
+    // @gotags: json:"create_at"
+    int64  create_at = 8;
+    // 支付时间
+    // @gotags: json:"pay_at"
+    int64  pay_at = 9;
+    // 创建人
+    // @gotags: json:"create_by"
+    string create_by = 10;
+    // 计费方式，比如：月95，日均峰值
+    // @gotags: json:"pay_mode"
+    resource.PayMode pay_mode = 11;
+    // 定义费用
+    // @gotags: json:"cost"
+    Cost cost = 12;
+    // 产品编码
+    // @gotags: json:"product_code"
+    string product_code = 13;
+    // 产品编码中文名称
+    // @gotags: json:"product_name"
+    string product_name = 14;
+    // 子产品编码
+    // @gotags: json:"sub_product_code"
+    string sub_product_code = 15;
+    // 子产品编码中文名称
+    // @gotags: json:"sub_product_name"
+    string sub_product_name = 16;
+    // 购买产品详情 
+    // @gotags: json:"product_info"
+    string product_info = 17;
+    // 订单对应的资源id
+    // @gotags: json:"resource_id"
+    repeated string resource_id = 18;
+}
+
+message Cost {
+    // 官网价,原价（分）
+    // @gotags: json:"sale_price"
+    double sale_price = 1;
+    // 折扣率
+    // @gotags: json:"policy"
+    double policy = 2;
+    // 单价（分）
+    // @gotags: json:"unit_price"
+    double unit_price = 3;
+    // 购买时长
+    // @gotags: json:"time_span"
+    double time_span = 4;
+    // 购买时长
+    // @gotags: json:"time_unit"
+    string time_unit = 5;
+    // 实际支付金额（分）
+    // @gotags: json:"real_cost"
+    double real_cost = 6;
+    // 代金券抵扣金额（分）
+    // @gotags: json:"voucher_pay"
+    double voucher_pay = 7;
+
+}

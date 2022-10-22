@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package infraboard.cmdb.slb;
+option go_package="github.com/tqtcloud/cloud-manage/apps/lb";
+
+import "apps/resource/pb/resource.proto";
+import "github.com/infraboard/mcube/pb/page/page.proto";
+
+service Service {
+    rpc SyncSLB(LoadBalancer) returns(LoadBalancer) {}
+    rpc QuerySLB(QuerySLBRequest) returns(LoadBalancer) {}
+}
+
+message LoadBalancer {
+    // @gotags: json:"resource"
+    resource.Resource resource = 1;
+    // @gotags: json:"describe"
+    Describe describe = 3;
+}
+
+message Describe {
+    // 负载均衡实例的域名，仅公网传统型负载均衡实例才提供该字段
+    // @gotags: json:"domain"
+    string domain = 1;
+    // 状态变化的时间
+    // @gotags: json:"status_at"
+    int64 status_at = 2;
+    // IP版本，可以设置为ipv4或者ipv6
+    // @gotags: json:"ip_version"
+    string ip_version = 3;
+    // 私网负载均衡实例的网络类型 vpc：专有网络实例 classic：经典网络实例
+    // @gotags: json:"network_type"
+    string network_type = 4;
+    // 带宽
+    // @gotags: json:"band_width"
+    int32 band_width = 5;
+}
+
+message LoadBalancerSet {
+    // 列表项
+    repeated LoadBalancer items = 1;
+    // 总数量
+    int64 total = 2;
+}
+
+message QuerySLBRequest {
+    // 分页参数
+    // @gotags: json:"page"
+    infraboard.mcube.page.PageRequest page = 1;
+}
+
+
+enum STATUS {
+    // 未知状态
+    UNKNOW = 0;
+    // 表示创建中
+    PENDING = 5;
+
+    // 表示运行中
+    RUNNING = 11;
+
+    // 表示实例已经锁定
+    LOCKED = 70;
+
+    // 表示停止
+    STOPPED = 80;
+    // 已销毁
+    DESTROYED = 90;
+}

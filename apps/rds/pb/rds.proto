@@ -1,0 +1,219 @@
+syntax = "proto3";
+
+package infraboard.cmdb.rds;
+option go_package="github.com/infraboard/cmdb/apps/rds";
+
+import "apps/resource/pb/resource.proto";
+import "github.com/infraboard/mcube/pb/page/page.proto";
+
+service Service {
+    rpc SyncRDS(Rds) returns(Rds) {}
+    rpc QueryRDS(QueryRDSRequest) returns(Set) {}
+}
+
+message Rds {
+    // @gotags: json:"resource"
+    resource.Resource resource = 1;
+    // Rds描述信息
+    // @gotags: json:"describe"
+    Describe describe = 2;
+}
+
+message Describe {
+    // 引擎 比如 MYSQL, SQLServer, PGSQL
+    // @gotags: json:"engine_type"
+    string engine_type = 1;
+    // 引擎版本
+    // @gotags: json:"engine_version"
+    string engine_version = 2;
+    // 实例规格: 对应ALI(DBInstanceClass)
+    // @gotags: json:"instance_class"
+    string instance_class = 3;
+    // 实例规格族，取值：s：共享型；x：通用型；d：独享套餐；h：独占物理机。
+    // @gotags: json:"class_type"
+    string class_type = 4;
+    // 实例是内网或外网 (Internet：外网/Intranet：内网)
+    // @gotags: json:"export_type"
+    string export_type = 5;
+    // 实例的网络类型 (Classic：经典网络/VPC：专有网络。)
+    // @gotags: json:"network_type"
+    string network_type = 6;
+    // 实例类型 Primary：主实例, Readonly：只读实例, Guard：灾备实例, Temp：临时实例
+    // @gotags: json:"type"
+    string type = 7;
+    // 一个实例下可创建最大数据库数量
+    // @gotags: json:"db_max_quantity"
+    int64 db_max_quantity = 8;
+    // 可创建账号的最大数量
+    // @gotags: json:"account_max_quantity"
+    int64 account_max_quantity = 9;
+    // 最大并发连接数
+    // @gotags: json:"max_connections"
+    int64 max_connections = 10;
+    // 最大每秒IO请求次数
+    // @gotags: json:"max_iops"
+    int64 max_iops = 11;
+    // 系统字符集排序规则
+    // @gotags: json:"collation"
+    string collation = 12;
+    // 时区
+    // @gotags: json:"time_zone"
+    string time_zone = 13;
+    // 实例储存类型 local_ssd/ephemeral_ssd：本地SSD盘, cloud_ssd：SSD云盘；cloud_essd：ESSD云盘
+    // @gotags: json:"storage_type"
+    string storage_type = 14;
+    // 安全名单模式, 默认白名单
+    // @gotags: json:"security_ip_mode"
+    string security_ip_mode = 15;
+    // IP白名单
+    // @gotags: json:"security_ip_list"
+    repeated string security_ip_list = 16;
+    // 实例的访问模式，取值：Standard：标准访问模式；Safe：数据库代理模式。
+    // @gotags: json:"connection_mode"
+    string connection_mode = 17;
+    // IP类型
+    // @gotags: json:"ip_type"
+    string ip_type = 18;
+    // 部署模式(腾讯云独有)
+    // @gotags: json:"deploy_mode"
+    string deploy_mode = 21;
+    // 端口
+    // @gotags: json:"port"
+    int64 port = 22;
+    // 额外的无法通用的一些属性, 比如只有腾讯云独有的一些属性
+    // @gotags: json:"extra"
+    map<string, string> extra = 23;
+    // 实例链接地址
+    // @gotags: json:"connection_addr"
+    repeated ConnectionAddr connection_addr = 28;
+    // 数据库
+    // @gotags: json:"databases"
+    repeated Database databases = 29;
+}
+
+message Set {
+    // 总数量
+    // @gotags: json:"total"
+    int64 total = 1;
+   // 列表项
+    // @gotags: json:"items"
+    repeated Rds items = 2;
+}
+
+message QueryRDSRequest {
+    // 分页参数
+    // @gotags: json:"page"
+    infraboard.mcube.page.PageRequest page = 1;
+}
+
+message Database {
+    // 数据库 库的名称
+    // @gotags: json:"name"
+    string name = 1;
+    // 数据库实例类型
+    // @gotags: json:"engine"
+    string engine =2;
+    // 数据库状态
+    // @gotags: json:"status"
+    string status =3;
+    // 字符集
+    // @gotags: json:"character_set"
+    string character_set =4;
+    // 数据库描述
+    // @gotags: json:"description"
+    string description = 5;
+    // 数据库账号
+    // @gotags: json:"accounts"
+    repeated Account accounts = 6;
+}
+
+// 数据库 账号信息
+message Account {
+    // 账号名称
+    // @gotags: json:"name"
+    string name = 1;
+    // 账号对该数据库拥有的权限
+    // @gotags: json:"account_privilege"
+    string account_privilege = 2;
+    // 账号对该数据库具有的权限。
+    // @gotags: json:"account_privilege_detail"
+    string account_privilege_detail = 3;
+    // 账号描述
+    // @gotags: json:"description"
+    string description = 4;
+    // 创建时间
+    // @gotags: json:"create_at"
+    int64 create_at = 5;
+    // 修改时间
+    // @gotags: json:"modify_at"
+    int64 modify_at = 6;
+}
+
+// 数据库 连接地址
+message ConnectionAddr {
+    // 连接地址类型, 内网链接/公网链接
+   // @gotags: json:"type"
+    string type = 1;
+    // 连接地址
+   // @gotags: json:"host"
+    string host = 2;
+    // 连接端口
+   // @gotags: json:"port"
+    int64 port = 3;
+}
+
+enum STATUS {
+    // 未知状态
+    UNKNOW = 0;
+    // 表示创建中
+    PENDING = 5;
+    // 表示创建失败
+    CREATE_FAILED = 6;
+
+    // 表示运行中
+    RUNNING = 11;
+
+    // 实例配置变更生效中
+    MODIFYING = 20;
+
+    // 表示重启中
+    REBOOTING = 30;
+    // 备份恢复中
+    RESTORING = 31;
+    // 迁移中
+    TRANSING = 32;
+    // 数据导入中
+    IMPORTING = 33;
+    // 实例克隆中
+    CLONING = 34;
+    // 迁移版本中
+    UPGRADING = 35;
+    // 表示实例正在进行备份
+    BACKING_UP = 36;
+    // 内外网切换中
+    NET_CHANGING = 37;
+
+    // 表示实例正在主备切换
+    SWITCHOVER = 40;
+    // 灾备实例创建同步中
+    GUARD_CREATING = 41;
+
+    // 状态异常
+	ERROR  = 50;
+    // 表示实例磁盘空间满
+    STORAGE_FULL = 51;
+
+    // 表示实例已经锁定
+    LOCKED = 70;
+    // 隔离中
+    ISOLATIONING = 71;
+    // 已隔中
+    ISOLATIONED = 72;
+
+    // 表示停止待销毁
+    SHUTDOWN = 80;
+    // 表示销毁中
+    DELETING = 81;
+    // 已销毁
+    DESTROYED = 90;
+}

@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package infraboard.cmdb.eip;
+option go_package="github.com/tqtcloud/cloud-manage/apps/eip";
+
+import "apps/resource/pb/resource.proto";
+import "github.com/infraboard/mcube/pb/page/page.proto";
+
+service Service {
+    rpc SyncEIP(EIP) returns(EIP) {}
+    rpc QueryEIP(QueryEIPRequest) returns(EIPSet) {}
+}
+
+message EIP {
+    // @gotags: json:"resource"
+    resource.Resource resource = 1;
+    // @gotags: json:"describe"
+    Describe describe = 2;
+}
+
+message Describe {
+    // BGP
+    // @gotags: json:"isp"
+    string isp = 1;
+    // 带宽, 单位M
+    // @gotags: json:"band_width"
+    int64 band_width = 2;
+    // 关联实例ID
+    // @gotags: json:"instance_id"
+    string instance_id = 3;
+    // 关联实例类型
+    // @gotags: json:"instance_type"
+    string instance_type = 4;
+    // 关联实例Region
+    // @gotags: json:"instance_region"
+    string instance_region = 5;
+    // 模式(NAT)
+    // @gotags: json:"mode"
+    string mode = 6;
+}
+
+message EIPSet {
+    // 总数量
+    // @gotags: json:"total"
+    int64 total = 1;
+    // 列表项
+    // @gotags: json:"items"
+    repeated EIP items = 2;
+}
+
+message QueryEIPRequest {
+    // 分页参数
+    // @gotags: json:"page"
+    infraboard.mcube.page.PageRequest page = 1;
+}
+
+enum STATUS {
+    // 未知状态
+    UNKNOW = 0;
+
+    // 表示创建中
+    PENDING = 5;
+    // 绑定中
+    BINDING = 6;
+    // 解绑中
+    UNBINDING = 7;
+    // 已绑定
+    BIND = 11;
+    // 已解绑
+    UNBIND = 12;
+
+    // 状态异常
+	ERROR  = 50;
+
+    // 释放中
+    OFFLINING = 80;
+    // 已销毁
+    DESTROYED = 90;
+}

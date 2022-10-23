@@ -41,22 +41,22 @@ func (s *service) syncRds(ctx context.Context, secretIns *secret.Secret, t *task
 			return
 		}
 		pager = op.RdsOperator().PageQueryRds(req)
-	case resource.VENDOR_TENCENT:
-		s.log.Debugf("sync txyun rds ...")
-		op, err := txyun.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
-		if err != nil {
-			t.Failed(err.Error())
-			return
-		}
-		pager = op.RdsOperator().PageQueryRds(req)
-	case resource.VENDOR_HUAWEI:
-		s.log.Debugf("sync hwyun rds ...")
-		op, err := huawei.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
-		if err != nil {
-			t.Failed(err.Error())
-			return
-		}
-		pager = op.RdsOperator().PageQueryRds(req)
+	//case resource.VENDOR_TENCENT:
+	//	s.log.Debugf("sync txyun rds ...")
+	//	op, err := txyun.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
+	//	if err != nil {
+	//		t.Failed(err.Error())
+	//		return
+	//	}
+	//	pager = op.RdsOperator().PageQueryRds(req)
+	//case resource.VENDOR_HUAWEI:
+	//	s.log.Debugf("sync hwyun rds ...")
+	//	op, err := huawei.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
+	//	if err != nil {
+	//		t.Failed(err.Error())
+	//		return
+	//	}
+	//	pager = op.RdsOperator().PageQueryRds(req)
 	default:
 		t.Failed(fmt.Sprintf("unsuport bill syncing vendor %s", secret.Vendor))
 		return

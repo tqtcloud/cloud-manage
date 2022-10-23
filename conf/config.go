@@ -3,6 +3,8 @@ package conf
 import (
 	"context"
 	"fmt"
+	orm_mysql "gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"sync"
 	"time"
 
@@ -12,6 +14,10 @@ import (
 
 var (
 	db *sql.DB
+)
+
+const (
+	CIPHER_TEXT_PREFIX = "@ciphered@"
 )
 
 func newConfig() *Config {
@@ -146,6 +152,26 @@ func (m *mysql) getDBConn() (*sql.DB, error) {
 	}
 	return db, nil
 }
+
+func (m *mysql) ORM() (*gorm.DB, error) {
+	conn, err := m.GetDB()
+	if err != nil {
+		return nil, err
+	}
+
+	return gorm.Open(orm_mysql.New(orm_mysql.Config{
+		Conn: conn,
+	}), &gorm.Config{
+		// 执行任何 SQL 时都创建并缓存预编译语句，可以提高后续的调用速度
+		PrepareStmt: true,
+		// 对于写操作（创建、更新、删除），为了确保数据的完整性，GORM 会将它们封装在事务内运行。
+		// 但这会降低性能，如果没有这方面的要求，您可以在初始化时禁用它，这将获得大约 30%+ 性能提升
+		SkipDefaultTransaction: true,
+		// 要有效地插入大量记录，请将一个 slice 传递给 Create 方法
+		CreateBatchSize: 200,
+	})
+}
+
 func (m *mysql) GetDB() (*sql.DB, error) {
 	// 加载全局数据量单例
 	m.lock.Lock()

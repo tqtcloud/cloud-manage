@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	resource "github.com/infraboard/cmdb/apps/resource"
-	"github.com/infraboard/cmdb/utils"
 	"github.com/infraboard/mcube/logger/zap"
+	resource "github.com/tqtcloud/cloud-manage/apps/resource"
+	"github.com/tqtcloud/cloud-manage/utils"
 )
 
 const (

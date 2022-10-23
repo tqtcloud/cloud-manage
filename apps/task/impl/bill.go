@@ -38,22 +38,22 @@ func (s *service) syncBill(ctx context.Context, secretIns *secret.Secret, t *tas
 			return
 		}
 		pager = op.BillOperator().PageQueryBill(req)
-	case resource.VENDOR_TENCENT:
-		s.log.Debugf("sync txyun bill ...")
-		op, err := txyun.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
-		if err != nil {
-			t.Failed(err.Error())
-			return
-		}
-		pager = op.BillOperator().PageQueryBill(req)
-	case resource.VENDOR_HUAWEI:
-		s.log.Debugf("sync hwyun bill ...")
-		op, err := huawei.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
-		if err != nil {
-			t.Failed(err.Error())
-			return
-		}
-		pager = op.BillOperator().PageQueryBill(req)
+	//case resource.VENDOR_TENCENT:
+	//	s.log.Debugf("sync txyun bill ...")
+	//	op, err := txyun.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
+	//	if err != nil {
+	//		t.Failed(err.Error())
+	//		return
+	//	}
+	//	pager = op.BillOperator().PageQueryBill(req)
+	//case resource.VENDOR_HUAWEI:
+	//	s.log.Debugf("sync hwyun bill ...")
+	//	op, err := huawei.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
+	//	if err != nil {
+	//		t.Failed(err.Error())
+	//		return
+	//	}
+	//	pager = op.BillOperator().PageQueryBill(req)
 	default:
 		t.Failed(fmt.Sprintf("unsuport bill syncing vendor %s", secret.Vendor))
 		return

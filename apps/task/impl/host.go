@@ -48,45 +48,45 @@ func (s *service) syncHost(ctx context.Context, secretIns *secret.Secret, t *tas
 			return
 		}
 		pager = op.HostOperator().PageQueryHost(req)
-	case resource.VENDOR_TENCENT:
-		s.log.Debugf("sync txyun cvm ...")
-		op, err := txyun.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
-		if err != nil {
-			t.Failed(err.Error())
-			return
-		}
-		pager = op.HostOperator().PageQueryHost(req)
-	case resource.VENDOR_HUAWEI:
-		s.log.Debugf("sync hwyun ecs ...")
-		op, err := huawei.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
-		if err != nil {
-			t.Failed(err.Error())
-			return
-		}
-		pager = op.HostOperator().PageQueryHost(req)
-	case resource.VENDOR_AMAZON:
-		s.log.Debugf("sync aws ec2 ...")
-		op := aws.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
-		pager = op.HostOperator().PageQueryHost(req)
-	case resource.VENDOR_VSPHERE:
-		s.log.Debugf("sync vshpere vm ...")
-		client := vsConn.NewVsphereClient(secret.Address, secret.ApiKey, secret.ApiSecret)
-		ec, err := client.VimClient()
-		if err != nil {
-			t.Failed(err.Error())
-			return
-		}
-		operator := vmOp.NewVMOperator(ec)
-		// 通过回调直接保存
-		err = operator.QueryHost(func(h *host.Host) {
-			// 补充管理信息
-			h.Resource.Meta.CredentialId = secretIns.Id
-			s.doSyncHost(ctx, h, t)
-		})
-		if err != nil {
-			t.Failed(err.Error())
-			return
-		}
+	//case resource.VENDOR_TENCENT:
+	//	s.log.Debugf("sync txyun cvm ...")
+	//	op, err := txyun.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
+	//	if err != nil {
+	//		t.Failed(err.Error())
+	//		return
+	//	}
+	//	pager = op.HostOperator().PageQueryHost(req)
+	//case resource.VENDOR_HUAWEI:
+	//	s.log.Debugf("sync hwyun ecs ...")
+	//	op, err := huawei.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
+	//	if err != nil {
+	//		t.Failed(err.Error())
+	//		return
+	//	}
+	//	pager = op.HostOperator().PageQueryHost(req)
+	//case resource.VENDOR_AMAZON:
+	//	s.log.Debugf("sync aws ec2 ...")
+	//	op := aws.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
+	//	pager = op.HostOperator().PageQueryHost(req)
+	//case resource.VENDOR_VSPHERE:
+	//	s.log.Debugf("sync vshpere vm ...")
+	//	client := vsConn.NewVsphereClient(secret.Address, secret.ApiKey, secret.ApiSecret)
+	//	ec, err := client.VimClient()
+	//	if err != nil {
+	//		t.Failed(err.Error())
+	//		return
+	//	}
+	//	operator := vmOp.NewVMOperator(ec)
+	//	// 通过回调直接保存
+	//	err = operator.QueryHost(func(h *host.Host) {
+	//		// 补充管理信息
+	//		h.Resource.Meta.CredentialId = secretIns.Id
+	//		s.doSyncHost(ctx, h, t)
+	//	})
+	//	if err != nil {
+	//		t.Failed(err.Error())
+	//		return
+	//	}
 	default:
 		t.Failed(fmt.Sprintf("unsuport vendor %s", secret.Vendor))
 		return

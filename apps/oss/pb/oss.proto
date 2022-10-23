@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package infraboard.cmdb.oss;
+option go_package="github.com/tqtcloud/cloud-manage/apps/oss";
+
+import "apps/resource/pb/resource.proto";
+import "github.com/infraboard/mcube/pb/page/page.proto";
+
+service Service {
+    rpc SyncBucket(Bucket) returns(Bucket) {}
+    rpc QueryBucket(QueryBucketRequest) returns(BucketSet) {}
+}
+
+message Bucket {
+    // @gotags: json:"resource"
+    resource.Resource resource = 1;
+    // @gotags: json:"describe"
+    Describe describe = 3;
+}
+
+message Describe {
+    // 存储类型
+    // @gotags: json:"storage_class"
+    string storage_class = 1;
+}
+
+message BucketSet {
+    // 总数量
+    // @gotags: json:"total"
+    int64 total = 1;
+    // 列表项
+    // @gotags: json:"items"
+    repeated Bucket items = 2;
+}
+
+message QueryBucketRequest {
+    // 分页参数
+    // @gotags: json:"page"
+    infraboard.mcube.page.PageRequest page = 1;
+}

@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package infraboard.cmdb.rds;
-option go_package="github.com/infraboard/cmdb/apps/rds";
+option go_package="github.com/tqtcloud/cloud-manage/apps/rds";
 
 import "apps/resource/pb/resource.proto";
 import "github.com/infraboard/mcube/pb/page/page.proto";

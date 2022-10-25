@@ -9,7 +9,7 @@ require (
 	github.com/alibabacloud-go/bssopenapi-20171214/v2 v2.0.6
 	github.com/alibabacloud-go/cms-20190101/v7 v7.0.45
 	github.com/alibabacloud-go/darabonba-openapi v0.2.1
-	github.com/alibabacloud-go/dds-20151201/v3 v3.6.10
+	github.com/alibabacloud-go/dds-20151201/v4 v4.0.2
 	github.com/alibabacloud-go/domain-20180129/v3 v3.14.8
 	github.com/alibabacloud-go/ecs-20140526/v2 v2.1.3
 	github.com/alibabacloud-go/r-kvstore-20150101/v2 v2.20.5
@@ -39,6 +39,7 @@ require (
 
 require (
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.4 // indirect
+	github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.0 // indirect
 	github.com/alibabacloud-go/debug v0.0.0-20190504072949-9472017b5c68 // indirect
 	github.com/alibabacloud-go/endpoint-util v1.1.0 // indirect
 	github.com/alibabacloud-go/openapi-util v0.0.11 // indirect

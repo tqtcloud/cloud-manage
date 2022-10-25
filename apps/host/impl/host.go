@@ -158,6 +158,7 @@ func (s *service) DescribeHost(ctx context.Context, req *host.DescribeHostReques
 		&ins.Resource.Status.Phase, &info.UpdateAt, &base.SyncAt, &info.Owner,
 		&publicIPList, &privateIPList, &ins.Resource.Cost.PayMode, &base.DescribeHash, &base.ResourceHash,
 		&base.CredentialId, &base.Domain, &base.Namespace, &base.Env, &base.UsageMode, &base.Id,
+		&ins.Resource.Spec.Cpu, &ins.Resource.Spec.Memory,
 		&desc.GpuSpec, &desc.OsType, &desc.OsName,
 		&desc.ImageId, &desc.InternetMaxBandwidthOut, &desc.InternetMaxBandwidthIn,
 		&keyPairNameList, &securityGroupsList,

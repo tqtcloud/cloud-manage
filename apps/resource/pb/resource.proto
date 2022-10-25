@@ -8,9 +8,9 @@ import "github.com/infraboard/mcube/pb/page/page.proto";
 service RPC {
 	rpc PutResource(ResourceSet) returns(ResourceSet);
 	rpc DeleteResource(ResourceSet) returns(ResourceSet);
-    rpc Search (SearchRequest) returns (ResourceSet);
-    rpc QueryTag(QueryTagRequest) returns (TagSet);
-    rpc UpdateTag (UpdateTagRequest) returns (Resource);
+  rpc Search (SearchRequest) returns (ResourceSet);
+  rpc QueryTag(QueryTagRequest) returns (TagSet);
+  rpc UpdateTag (UpdateTagRequest) returns (Resource);
 }
 
 enum VENDOR {

@@ -11,7 +11,7 @@ import (
 	bssopenapi "github.com/alibabacloud-go/bssopenapi-20171214/v2/client"
 	cms "github.com/alibabacloud-go/cms-20190101/v7/client"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/client"
-	dds "github.com/alibabacloud-go/dds-20151201/v3/client"
+	dds "github.com/alibabacloud-go/dds-20151201/v4/client"
 	domain "github.com/alibabacloud-go/domain-20180129/v3/client"
 	ecs "github.com/alibabacloud-go/ecs-20140526/v2/client"
 	redis "github.com/alibabacloud-go/r-kvstore-20150101/v2/client"
@@ -176,24 +176,24 @@ func (c *AliCloudClient) RedisClient() (*redis.Client, error) {
 	return client, nil
 }
 
-func (c *AliCloudClient) MongoDBClient() (*dds.Client, error) {
-	if c.ddsConn != nil {
-		return c.ddsConn, nil
-	}
-
-	client, err := dds.NewClient(&openapi.Config{
-		AccessKeyId:     tea.String(c.AccessKey),
-		AccessKeySecret: tea.String(c.AccessSecret),
-		Endpoint:        tea.String("mongodb.aliyuncs.com"),
-		RegionId:        tea.String(c.Region),
-	})
-	if err != nil {
-		return nil, fmt.Errorf("new rds client error, %s", err)
-	}
-
-	c.ddsConn = client
-	return client, nil
-}
+//func (c *AliCloudClient) MongoDBClient() (*dds.Client, error) {
+//	if c.ddsConn != nil {
+//		return c.ddsConn, nil
+//	}
+//
+//	client, err := dds.NewClient(&openapi.Config{
+//		AccessKeyId:     tea.String(c.AccessKey),
+//		AccessKeySecret: tea.String(c.AccessSecret),
+//		Endpoint:        tea.String("mongodb.aliyuncs.com"),
+//		RegionId:        tea.String(c.Region),
+//	})
+//	if err != nil {
+//		return nil, fmt.Errorf("new rds client error, %s", err)
+//	}
+//
+//	c.ddsConn = client
+//	return client, nil
+//}
 
 func (c *AliCloudClient) ActionTrailClient() (*actiontrail.Client, error) {
 	if c.atConn != nil {

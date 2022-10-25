@@ -4,7 +4,7 @@ key  = "this is your app key"
 
 [app.http]
 host = "127.0.0.1"
-port = "8050"
+port = "8060"
 
 [app.grpc]
 host = "127.0.0.1"

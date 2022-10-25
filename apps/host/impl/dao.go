@@ -64,7 +64,7 @@ func (s *service) save(ctx context.Context, h *host.Host) error {
 
 	desc := h.Describe
 	_, err = stmt.ExecContext(ctx,
-		h.Resource.Meta.Id, desc.GpuSpec, desc.OsType, desc.OsName,
+		h.Resource.Meta.Id, h.Resource.Spec.Cpu, h.Resource.Spec.Memory, desc.GpuSpec, desc.OsType, desc.OsName,
 		desc.ImageId, desc.InternetMaxBandwidthOut,
 		desc.InternetMaxBandwidthIn, desc.KeyPairNameToString(), desc.SecurityGroupsToString(),
 	)
@@ -107,7 +107,9 @@ func (s *service) update(ctx context.Context, ins *host.Host) error {
 
 	base := ins.Resource.Meta
 	desc := ins.Describe
+
 	_, err = stmt.ExecContext(ctx,
+
 		desc.GpuSpec, desc.OsType, desc.OsName,
 		desc.ImageId, desc.InternetMaxBandwidthOut,
 		desc.InternetMaxBandwidthIn, desc.KeyPairNameToString(), desc.SecurityGroupsToString(),

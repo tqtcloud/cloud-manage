@@ -3,7 +3,7 @@ package dds
 import (
 	"context"
 
-	dds "github.com/alibabacloud-go/dds-20151201/v3/client"
+	dds "github.com/alibabacloud-go/dds-20151201/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"

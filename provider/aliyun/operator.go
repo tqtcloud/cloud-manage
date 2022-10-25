@@ -7,7 +7,6 @@ import (
 	"github.com/tqtcloud/cloud-manage/provider/aliyun/bss"
 	"github.com/tqtcloud/cloud-manage/provider/aliyun/cms"
 	"github.com/tqtcloud/cloud-manage/provider/aliyun/connectivity"
-	"github.com/tqtcloud/cloud-manage/provider/aliyun/dds"
 	"github.com/tqtcloud/cloud-manage/provider/aliyun/dns"
 	"github.com/tqtcloud/cloud-manage/provider/aliyun/ecs"
 	"github.com/tqtcloud/cloud-manage/provider/aliyun/oss"
@@ -102,13 +101,13 @@ func (o *Operator) RdsOperator() provider.RdsOperator {
 	return rds.NewRdsOperator(c)
 }
 
-func (o *Operator) MongoOperator() provider.MongoOperator {
-	c, err := o.client.MongoDBClient()
-	if err != nil {
-		panic(err)
-	}
-	return dds.NewOperator(c)
-}
+//func (o *Operator) MongoOperator() provider.MongoOperator {
+//	c, err := o.client.MongoDBClient()
+//	if err != nil {
+//		panic(err)
+//	}
+//	return dds.NewOperator(c)
+//}
 
 func (o *Operator) RedisOperator() provider.RedisOperator {
 	c, err := o.client.RedisClient()

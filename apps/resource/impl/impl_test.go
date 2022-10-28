@@ -22,7 +22,7 @@ func TestPageQueryHost(t *testing.T) {
 	for pager.Next() {
 		set := host.NewHostSet()
 		if err := pager.Scan(context.Background(), set); err != nil {
-			panic(err)
+			fmt.Println(err)
 		}
 		for i := range set.Items {
 			fmt.Println(set.Items[i])
@@ -34,7 +34,7 @@ func init() {
 	zap.DevelopmentSetup()
 	err := aliyun.LoadOperatorFromEnv()
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	operator = aliyun.O().HostOperator()
 }

@@ -46,15 +46,15 @@ func (s *service) QueryHost(ctx context.Context, req *host.QueryHostRequest) (
 	*host.HostSet, error) {
 	query := sqlbuilder.NewQuery(queryHostSQL)
 
-	if req.Keywords != "" {
-		query.Where("r.name LIKE ? OR r.id = ? OR r.instance_id = ? OR r.private_ip LIKE ? OR r.public_ip LIKE ?",
-			"%"+req.Keywords+"%",
-			req.Keywords,
-			req.Keywords,
-			req.Keywords+"%",
-			req.Keywords+"%",
-		)
-	}
+	//if req.Keywords != "" {
+	//	query.Where("r.name LIKE ? OR r.id = ? OR r.instance_id = ? OR r.private_ip LIKE ? OR r.public_ip LIKE ?",
+	//		"%"+req.Keywords+"%",
+	//		req.Keywords,
+	//		req.Keywords,
+	//		req.Keywords+"%",
+	//		req.Keywords+"%",
+	//	)
+	//}
 
 	set := host.NewHostSet()
 
@@ -83,6 +83,7 @@ func (s *service) QueryHost(ctx context.Context, req *host.QueryHostRequest) (
 
 	queryStmt, err := s.db.PrepareContext(ctx, querySQL)
 	if err != nil {
+		s.log.Error("queryStmt Error:",err)
 		return nil, exception.NewInternalServerError("prepare query host error, %s", err.Error())
 	}
 	defer queryStmt.Close()
@@ -106,12 +107,15 @@ func (s *service) QueryHost(ctx context.Context, req *host.QueryHostRequest) (
 			&info.Category, &info.Type, &info.Name, &info.Description,
 			&ins.Resource.Status.Phase, &info.UpdateAt, &base.SyncAt, &info.Owner,
 			&publicIPList, &privateIPList, &ins.Resource.Cost.PayMode, &base.DescribeHash, &base.ResourceHash,
-			&base.CredentialId, &base.Domain, &base.Namespace, &base.Env, &base.UsageMode, &base.Id,
-			&desc.GpuSpec, &desc.OsType, &desc.OsName,
+			&base.CredentialId, &base.Domain, &base.Namespace, &base.Env, &base.UsageMode,	&base.Id,
+			&ins.Resource.Spec.Cpu, &ins.Resource.Spec.Memory,
+			&desc.GpuSpec,
+			&desc.OsType, &desc.OsName,
 			&desc.ImageId, &desc.InternetMaxBandwidthOut, &desc.InternetMaxBandwidthIn,
 			&keyPairNameList, &securityGroupsList,
 		)
 		if err != nil {
+			s.log.Error("rows.Scan Error:",err)
 			return nil, exception.NewInternalServerError("query host error, %s", err.Error())
 		}
 		ins.Resource.Status.LoadPrivateIPString(privateIPList)
@@ -168,6 +172,7 @@ func (s *service) DescribeHost(ctx context.Context, req *host.DescribeHostReques
 		if err == sql.ErrNoRows {
 			return nil, exception.NewNotFound("%#v not found", req)
 		}
+		s.log.Errorf("sql scan error : %s",err)
 		return nil, exception.NewInternalServerError("describe host error, %s", err.Error())
 	}
 

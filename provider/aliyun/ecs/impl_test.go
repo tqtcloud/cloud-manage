@@ -3,6 +3,7 @@ package ecs_test
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/infraboard/mcube/logger/zap"
@@ -81,7 +82,8 @@ func init() {
 	zap.DevelopmentSetup()
 	err := aliyun.LoadOperatorFromEnv()
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		os.Exit(-1)
 	}
 	operator = aliyun.O().HostOperator()
 }

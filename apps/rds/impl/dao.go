@@ -50,11 +50,12 @@ func (s *service) save(ctx context.Context, h *rds.Rds) error {
 	defer stmt.Close()
 
 	desc := h.Describe
+	rese := h.Resource
 	_, err = stmt.Exec(
 		h.Resource.Meta.Id, desc.EngineType, desc.EngineVersion, desc.InstanceClass, desc.ClassType, desc.ExportType,
-		desc.NetworkType, desc.Type, desc.DbMaxQuantity, desc.AccountMaxQuantity, desc.MaxConnections,
+		desc.NetworkType, desc.Type, rese.Spec.Cpu ,rese.Spec.Memory,desc.DbMaxQuantity, desc.AccountMaxQuantity, desc.MaxConnections,
 		desc.MaxIops, desc.Collation, desc.TimeZone, desc.StorageType, desc.SecurityIpMode,
-		desc.SecurityIpListToString(), desc.ConnectionMode, desc.IpType, desc.DeployMode,
+		desc.SecurityIpListToString(), desc.ConnectionMode, desc.IpType,  desc.DeployMode,
 		desc.Port, desc.ExtraToJson(),
 	)
 	if err != nil {

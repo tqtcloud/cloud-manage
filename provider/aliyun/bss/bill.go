@@ -17,6 +17,7 @@ import (
 	"github.com/tqtcloud/cloud-manage/utils"
 )
 
+// PageQueryBill 获取账单的分页，限流请求
 func (o *BssOperator) PageQueryBill(req *provider.QueryBillRequest) pager.Pager {
 	p := newPager(o, req)
 	p.SetRate(req.Rate)

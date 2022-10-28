@@ -81,7 +81,7 @@ func (s *service) syncRds(ctx context.Context, secretIns *secret.Secret, t *task
 	}
 }
 
-// Rds数据入库
+// SaveOrUpdateRds Rds数据入库
 func (s *service) SaveOrUpdateRds(ctx context.Context, ins *rds.Rds, t *task.Task) {
 	ins.Resource.Meta.SyncAt = time.Now().Unix()
 	b, err := s.rds.SyncRDS(ctx, ins)

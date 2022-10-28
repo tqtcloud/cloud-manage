@@ -37,7 +37,7 @@ func TestQueryBill(t *testing.T) {
 
 func TestQuerySummary(t *testing.T) {
 	req := provider.NewQueryBillSummaryRequeset()
-	req.Month = "2022-06"
+	req.Month = "2022-05"
 	operator.QuerySummary(context.TODO(), req)
 }
 

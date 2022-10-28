@@ -34,6 +34,7 @@ func (s *service) syncBill(ctx context.Context, secretIns *secret.Secret, t *tas
 		s.log.Debugf("sync aliyun bill ...")
 		op, err := aliyun.NewOperator(secret.ApiKey, secret.ApiSecret, t.Data.Region)
 		if err != nil {
+			s.log.Errorf("aliyun.NewOperator： %s",err.Error())
 			t.Failed(err.Error())
 			return
 		}
@@ -68,18 +69,26 @@ func (s *service) syncBill(ctx context.Context, secretIns *secret.Secret, t *tas
 				return
 			}
 			for i := range set.Items {
-				target := set.Items[i]
-				target.TaskId = t.Id
-				s.doSyncBill(ctx, target, t)
+				ins := set.Items[i]
+				ins.TaskId = t.Id
+				// 打印所有的实例信息
+				//s.log.Info(ins)
+
+				// 账单时间没有的，采用请求年月
+				if ins.Month == "" {
+					ins.Month =  t.Data.Params["month"]
+				}
+				s.doSyncBill(ctx, ins, t)
 			}
 		}
 	}
 
 }
 
-// 月底账单数据入库
+// doSyncBill 月底账单数据入库
 func (s *service) doSyncBill(ctx context.Context, ins *bill.Bill, t *task.Task) {
 	h, err := s.bill.SyncBill(ctx, ins)
+	//s.log.Debug("doSyncBill ",ins.Year,ins.Month)
 
 	var detail *task.Record
 	if err != nil {
@@ -96,6 +105,7 @@ func (s *service) doSyncBill(ctx context.Context, ins *bill.Bill, t *task.Task) 
 	}
 }
 
+// syncBillDown 任务同步完后的回调函数
 func (s *service) syncBillDown(ctx context.Context, t *task.Task, cb SyncTaskCallback) {
 	t.Completed()
 	cb(t)
@@ -109,7 +119,7 @@ func (s *service) syncBillDown(ctx context.Context, t *task.Task, cb SyncTaskCal
 		if err != nil {
 			s.log.Errorf("confirm bill error, %s", err)
 		} else {
-			s.log.Debugf("confirm bill success, total: %d bill", resp.Total)
+			s.log.Debugf("confirm bill success, total: %d bill", resp.GetTotal())
 		}
 	} else {
 		resp, err := s.bill.DeleteBill(ctx, bill.NewDeleteBillRequest(t.Id))

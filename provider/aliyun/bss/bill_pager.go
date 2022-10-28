@@ -41,6 +41,8 @@ type bssPager struct {
 
 func (p *bssPager) Scan(ctx context.Context, set pager.Set) error {
 	resp, err := p.operator.doQueryBill(p.nextReq())
+	//p.log.Info("111111111111111111111111",resp.Items[0].Month)
+
 	if err != nil {
 		return err
 	}

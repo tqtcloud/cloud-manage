@@ -14,6 +14,7 @@ func (h *handler) CreatTask(r *restful.Request, w *restful.Response) {
 		response.Failed(w, err)
 		return
 	}
+	//h.log.Debugf("CreatTask 入参捕获年月份：%s",req.Params["month"])
 
 	set, err := h.task.CreatTask(r.Request.Context(), req)
 	if err != nil {

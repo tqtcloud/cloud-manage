@@ -9,6 +9,7 @@ import (
 	"github.com/tqtcloud/cloud-manage/apps/bill"
 )
 
+// SyncBill 插入 task  同步任務
 func (s *service) SyncBill(ctx context.Context, req *bill.Bill) (
 	*bill.Bill, error) {
 	stmt, err := s.db.PrepareContext(ctx, insertBillSQL)
@@ -18,6 +19,8 @@ func (s *service) SyncBill(ctx context.Context, req *bill.Bill) (
 	defer stmt.Close()
 
 	y, m := req.YearMonth()
+
+	//s.log.Debugf("请求账单月份为： %d 年 %d 月份",y,m)
 
 	_, err = stmt.ExecContext(ctx,
 		req.Vendor, y, m, req.OwnerId, req.OwnerName, req.ProductType, req.ProductCode, req.ProductDetail,

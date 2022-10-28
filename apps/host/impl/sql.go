@@ -26,8 +26,8 @@ const (
 	LEFT JOIN resource_host  h ON r.id = h.resource_id
 	LEFT JOIN resource_tag t ON r.id = t.resource_id`
 
-	countHostSQL = `SELECT
-	COUNT(DISTINCT r.id)
+	countHostSQL = `
+    SELECT COUNT(DISTINCT r.id)
 	FROM
 	resource AS r
 	LEFT JOIN resource_host  h ON r.id = h.resource_id

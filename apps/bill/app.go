@@ -48,6 +48,7 @@ func (s *BillSet) Length() int64 {
 	return int64(len(s.Items))
 }
 
+// YearMonth 根据 - 进行年月数据的切割
 func (b *Bill) YearMonth() (int, int) {
 	if b.Month == "" {
 		return 0, 0

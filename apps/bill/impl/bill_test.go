@@ -4,12 +4,15 @@ import (
 	"context"
 	"testing"
 
+	"github.com/tqtcloud/cloud-manage/provider/aliyun"
+
 	"github.com/infraboard/mcube/app"
 	"github.com/infraboard/mcube/logger/zap"
 	"github.com/stretchr/testify/assert"
 	"github.com/tqtcloud/cloud-manage/conf"
 	"github.com/tqtcloud/cloud-manage/provider"
 
+	// op "github.com/tqtcloud/cloud-manage/provider/aliyun/bss"
 	"github.com/tqtcloud/cloud-manage/apps/bill"
 	//op "github.com/tqtcloud/cloud-manage/provider/txyun/billing"
 	//"github.com/tqtcloud/cloud-manage/provider/txyun/connectivity"
@@ -57,11 +60,11 @@ func init() {
 	}
 	svc = app.GetGrpcApp(bill.AppName).(bill.ServiceServer)
 
-	err := connectivity.LoadClientFromEnv()
+	err := aliyun.LoadOperatorFromEnv()
 	if err != nil {
 		panic(err)
 	}
 
-	client := connectivity.C()
-	operator = op.NewBillingoperator(client.BillingClient())
+	//client :=
+	operator = aliyun.O().BillOperator()
 }
